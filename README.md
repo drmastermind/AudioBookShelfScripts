@@ -51,6 +51,5 @@ showTags
 
 These last two you'll probably never need.  I created them to set the metadata.json file ot immutable to keep the scanner from overiting the metadata when I moved folders around.  
 
-lockMetadata
-unlockMetadata
 
+NOTE: These were tested on ABS v2.7.2 and probably wont work for any previous versions.
