@@ -1,0 +1,9 @@
+
+IFS='
+'
+
+
+for x in $(find . -name *json)
+do
+	chattr +i ${x}
+done

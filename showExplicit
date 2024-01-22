@@ -1,0 +1,18 @@
+IFS='
+'
+
+# the first argument should be the new series name
+
+if [ "$1" == "" ]; then
+        echo "$(basename "$0"): Directory ..."
+        exit -1
+fi
+
+
+for x in $(find . -name *json)
+do
+	echo -ne "${x}: "
+	jq '.explicit' "${x}" 
+
+
+done

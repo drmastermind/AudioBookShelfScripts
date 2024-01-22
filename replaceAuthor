@@ -1,0 +1,58 @@
+#!/usr/bin/env bash
+
+#
+# written by: David Scott
+# date      : 01/21/2024
+#
+
+IFS='
+'
+
+
+# the first argument should be the new series name
+
+if [ "$1" == "" ]; then
+        echo "$(basename "$0"): Series Directory ..."
+        exit -1
+fi
+
+# the first argument should be the new author name
+
+tag=${1}
+shift
+
+# the rest are the directories to apply that series to
+
+for dir in $@
+do
+
+        pushd . > /dev/null 2>&1
+        echo -e "processing ${dir}\n"
+        cd ${dir}
+
+        #
+        # in theory there should only be 1 json file but occasionally I run this on an upper level dir so be sure
+        #
+        for x in $(find . -name *json)
+        do
+                echo -ne "${x}: "
+
+                # don't want to overite the metadata file
+
+                mv "${x}" "${x}-"
+
+                #
+                # remove the series that are there 
+                #
+
+		jq "del(.authors[])" ${x}- | \
+
+		#
+		# now add the new series 
+		#
+        	jq ".authors[.authors| length] |= . + \"${tag}\" " > "${x}"
+		echo -e "done\n"
+		rm ${x}-
+	done
+	popd > /dev/null 2>&1 
+done
